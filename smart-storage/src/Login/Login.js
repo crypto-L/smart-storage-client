@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { loginRequest } from './api/login-api';
 import './Login.css';
+import { Input, Space , Button, Alert} from 'antd';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+
 
 class Login extends React.Component {
 
@@ -11,6 +14,7 @@ class Login extends React.Component {
     this.state = {
       nickname: '',
       password: '',
+      errorOccured: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
@@ -24,21 +28,47 @@ class Login extends React.Component {
 
   async handleButtonClick(){
     var token = await loginRequest(this.state.nickname, this.state.password);
-    console.dir(token);
-    // this.props.onLogin();
+    if(token === null){
+      this.setState({
+        nickname: '',
+        password: '',
+        errorOccured: true,
+      });
+    } else{
+      localStorage.setItem('token', token.token);
+      localStorage.setItem('userId', token.userId);
+      this.props.onLogin();
+    };
   };
 
   render() {
     // TODO: проверять тут токен в локал-сторадже, если есть, редирект на хоум
+    const renderErrorBlock = () => {
+      if(this.state.errorOccured){
+        return (<Alert
+          message="Wrong nickname or password!"
+          type="error"
+          showIcon
+          />);
+      };
+    };
+    
     return(
       <div className="Login">
-      <input type="text" name='nickname' onChange={this.handleChange} value={this.state.nickname} placeholder='Nickname...'></input> 
-      <br></br>
-      <input type="password" name='password' onChange={this.handleChange} value={this.state.password} placeholder='Password...'></input>
-      <br></br>
-      <button className='Login-button' onClick={this.handleButtonClick}>Log in</button>
+      <Space direction="vertical">
+        <Input placeholder="Nickname..." name='nickname' onChange={this.handleChange} value={this.state.nickname} />
+        <Input.Password 
+        name='password' onChange={this.handleChange} value={this.state.password}
+        iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} 
+        placeholder="Password..." 
+        />
+        <Button onClick={this.handleButtonClick} type="primary" size="default">
+          Log in
+        </Button>
+      </Space>
       <br></br>
       <Link to="/register">Register</Link>
+      {renderErrorBlock()}
       </div>
     );
   }

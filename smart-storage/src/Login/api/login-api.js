@@ -13,7 +13,10 @@ function loginRequest(nickname, password) {
             const token = res.data.token;
             return new Token(userId, token);
         }
-    }, error => console.dir(error.response.status));
+    }, error => {
+        console.dir(error.response.status);
+        return null;
+    });
 };
 
 export {loginRequest};
