@@ -19,7 +19,7 @@ class App extends React.Component {
 
     render() {
         //или тут проверять локал сторадж на наличие токена, если нету - рендерить логин 
-        //https://ru.reactjs.org/docs/conditional-rendering.html как раз тут пример
+        //https://ru.reactjs.org/docs/conditional-rendering.html как раз тут примерр
 
 
         return(
