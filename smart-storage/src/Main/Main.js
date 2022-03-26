@@ -21,12 +21,14 @@ class Main extends React.Component {
     }
 
     render() {
-        if(this.state.isAdmin !== null){
+        if(this.state.isAdmin === false){
             return (<BasicLayout />);
         }
-        else{
-            return "Nothing loaded";
-        } 
+        else if(this.state.isAdmin === true){
+            return "Admin layout. Not implemented yet.";
+        } else {
+            return null;
+        }
     }
 }
 

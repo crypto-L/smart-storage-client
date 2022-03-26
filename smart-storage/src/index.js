@@ -10,7 +10,7 @@ import 'antd/dist/antd.css';
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="*" element={<App />} />
       <Route path="register" element={<About />} />
     </Routes>
   </BrowserRouter>

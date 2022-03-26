@@ -2,8 +2,9 @@ import React from "react";
 import 'antd/dist/antd.css';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { Link, Route, Routes } from "react-router-dom";
-import { Storages } from "./Storages";
+import Storages from "./Storages";
 import { Items } from "./Items";
+import './index.css';
 
 const { Header, Content, Footer } = Layout;
 
@@ -17,19 +18,18 @@ class BasicLayout extends React.Component {
             <Layout className="layout">
                 <Header>
                     <div className="logo" />
-                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                    {new Array(3).fill(null).map((_, index) => {
-                     const key = index + 1;
-                        return <Menu.Item key={key}>Link<Link to="/register" /></Menu.Item>;
-                    })}
+                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+                        <Menu.Item key={1}>Storages<Link to="/storages" /></Menu.Item>
+                        <Menu.Item key={2}>Items<Link to="/items" /></Menu.Item>
                     </Menu>
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
+                    <div className="site-layout-content">
                     <Routes>
-                        <Route path="/storages" component={Storages}/>
-                        <Route path="/items" component={Items}/>
+                        <Route path="/storages" element={<Storages/>}/>
+                        <Route path="/items" element={<Items />}/>
                     </Routes>
-                    <div className="site-layout-content">Content</div>
+                    </div>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>Smart Storage © 2022 Created by Ant UED</Footer>
             </Layout>
