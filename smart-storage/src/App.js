@@ -1,6 +1,7 @@
 import React from 'react';
 import Login from './Login/Login';
 import 'antd/dist/antd.css';
+import Main from './Main/Main';
 
 class App extends React.Component {
     constructor(props){
@@ -38,8 +39,7 @@ class App extends React.Component {
             return(
                 
                 <div className="App">
-                    {this.state.isLogged.toString()}
-                Home
+                    <Main />
                 </div>
             );
         };
