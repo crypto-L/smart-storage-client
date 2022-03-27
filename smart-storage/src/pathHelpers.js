@@ -4,4 +4,7 @@ function createUrl(path){
     return baseApiUrl + path;
 }
 
-export {createUrl};
+function createUrlWithParameters(path, parameters){
+    return baseApiUrl + path + '/' + parameters;
+}
+export {createUrl, createUrlWithParameters};

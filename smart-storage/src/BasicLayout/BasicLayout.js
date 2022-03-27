@@ -18,7 +18,7 @@ class BasicLayout extends React.Component {
             <Layout className="layout">
                 <Header>
                     <div className="logo" />
-                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['0']}>
                         <Menu.Item key={1}>Storages<Link to="/storages" /></Menu.Item>
                         <Menu.Item key={2}>Items<Link to="/items" /></Menu.Item>
                     </Menu>
