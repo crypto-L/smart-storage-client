@@ -1,7 +1,10 @@
+import React from "react";
+import { Link } from 'react-router-dom';
+
 function Items() {
     return(
         <div className="Items">
-            <p>I'm Items component.</p>
+            <Link to={'/storages'} state={{storageId: 'test'}}>To storages</Link>
         </div>
     );
 }

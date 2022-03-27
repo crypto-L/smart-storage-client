@@ -42,7 +42,11 @@ function addNewSubStorage(usrId, tokenString, storageName, currentStorageId){
     const header = { userId: usrId, token: tokenString };
     const storageDto = new Storage(storageName, usrId, null, currentStorageId, null);
     return axios.post(createUrl('/storages'),storageDto, {headers:header})
-        .then(res => console.log(res.data));
+        .then(res => {
+            const responseData = res.data;
+            const storageDto = convertStorageResponseToDto(responseData);
+            return storageDto;
+        });
 }
 
 function convertStorageResponseToDto(storage){

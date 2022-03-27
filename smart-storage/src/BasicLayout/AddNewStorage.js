@@ -6,12 +6,12 @@ function AddNewStorage(props) {
     const currentStorageId = props.currentStorageId;
     const [newStorageName, setNewStorageName] = useState('');
     
-    function handleOnSubmit(newStorageName){
+    async function handleOnSubmit(newStorageName){
         const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
-        addNewSubStorage(userId, token, newStorageName, currentStorageId);
+        await addNewSubStorage(userId, token, newStorageName, currentStorageId);
         setNewStorageName('');
-        props.onNewStorageAdd();
+        await props.onNewStorageAdd();
     }
     return (
     <Input.Group compact>

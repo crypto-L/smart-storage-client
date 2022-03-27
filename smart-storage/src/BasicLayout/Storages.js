@@ -5,29 +5,28 @@ import {Row, Col, Button} from 'antd';
 import { Link } from "react-router-dom";
 import AddNewStorage from "./AddNewStorage";
 
+
 class Storages extends React.Component{
     constructor(props){
         super(props);
 
         this.state = {
-            currentStorageId: null,
+            currentStorageId: this.props.storageId ?? null,
             currentStorageName: null,
             parentStorageId: null,
             parentStorageName: null,
             subStorages: [],
         };
-
+        
         this.handleStorageClick = this.handleStorageClick.bind(this);
         this.handleNewStorageAdd = this.handleNewStorageAdd.bind(this);
     }
-
+    
     async handleNewStorageAdd() {
         //refreshing the page when new storage added
         //callback for AddNewStorage.js
         const currentStorageId = this.state.currentStorageId;
-
-        console.log("Current Id: " + currentStorageId);
-        console.log(this.state.subStorages.toString());
+        this.handleStorageClick(currentStorageId);
     }
 
     handleStorageClick = async (storageId) => {
@@ -60,8 +59,18 @@ class Storages extends React.Component{
     };
 
     async componentDidMount(){
-        const storages = await getAllSubStorages(localStorage.getItem('userId'), localStorage.getItem('token'), null);
-        this.setState({subStorages: storages});
+
+        //in case of redirect from newItemPage
+        let storageId = null;
+        if(this.props.storageId){
+            storageId = this.props.storageId;
+            this.handleStorageClick(storageId);
+        }
+        else{
+            const storages = await getAllSubStorages(localStorage.getItem('userId'), localStorage.getItem('token'), storageId);
+            this.setState({subStorages: storages});
+        }
+        
     };
 
     render(){
@@ -99,9 +108,11 @@ class Storages extends React.Component{
             <Col span={12}>
             <p>Storage {this.state.currentStorageName}:</p>
             <AddNewStorage currentStorageId={this.state.currentStorageId} onNewStorageAdd={() => this.handleNewStorageAdd()}/>
+            <Link to={'/addNewItem'} state={{storageId: this.state.currentStorageId}}>Add new item</Link>
             <Button type="link" onClick={() => this.handleStorageClick(parentId)}>
                 Back
             </Button>
+            
             </Col>
 
             <Col span={12}>
