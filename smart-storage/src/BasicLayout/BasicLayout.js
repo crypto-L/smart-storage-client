@@ -20,7 +20,8 @@ const BasicLayout = () => {
     }
     else {
         const storageId = state.storageId;
-        addNewItemRoute = <Route path="/addNewItem" element={<AddNewItem storageId={storageId}/>}/>
+        const itemId = state.itemId;
+        addNewItemRoute = <Route path="/addNewItem" element={<AddNewItem itemId={itemId} storageId={storageId}/>}/>
         storageRoute = <Route path="/storages" element={<Storages storageId={storageId}/>}/>
     }
 

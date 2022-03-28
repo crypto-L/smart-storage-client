@@ -1,5 +1,6 @@
 import axios from "axios";
 import Token from "../../DTO/Token";
+import Item from "../../DTO/Item";
 import Storage from "../../DTO/Storage";
 import { createUrlWithParameters , createUrl} from "../../pathHelpers";
 
@@ -12,6 +13,8 @@ function getAllSubStorages(usrId, tokenString, parentStorageId){
                 const responseData = res.data;
                 const storageDtos = responseData.map( (storage) => convertStorageResponseToDto(storage));
                 return storageDtos;
+            }, error => {
+                return null;
             });
     } else {
         return axios.get(createUrlWithParameters('/Storages/GetAllStorages', parentStorageId), {headers : header})
@@ -19,9 +22,10 @@ function getAllSubStorages(usrId, tokenString, parentStorageId){
             const responseData = res.data;
             const storageDtos = responseData.map( (storage) => convertStorageResponseToDto(storage));
             return storageDtos;
+        }, error => {
+            return null;
         });
     }
-    
 }
 
 function getStorage(usrId, tokenString, storageId){
@@ -32,6 +36,8 @@ function getStorage(usrId, tokenString, storageId){
             const responseData = res.data;
             const storageDto = convertStorageResponseToDto(responseData);
             return storageDto;
+        }, error => {
+            return null;
         });
 }
 
@@ -46,7 +52,33 @@ function addNewSubStorage(usrId, tokenString, storageName, currentStorageId){
             const responseData = res.data;
             const storageDto = convertStorageResponseToDto(responseData);
             return storageDto;
+        }, error => {
+            return null;
         });
+}
+
+function addNewItem(usrId, tokenString, itemDto){
+    const header = {userId: usrId, token: tokenString};
+
+    return axios.post(createUrl('/items'), itemDto, {headers: header})
+        .then(res => {
+            const responseData = res.data;
+            return convertItemResponseToDto(responseData);
+        }, error => {
+            return null;
+        })
+}
+
+function getItem(usrId, tokenString, itemId){
+    const header = {userId: usrId, token: tokenString};
+    return axios.get(createUrlWithParameters('/items', itemId), {headers: header})
+        .then(res => {
+            const responseData = res.data;
+            return convertItemResponseToDto(responseData);
+        }, error => {
+            return null;
+        });
+
 }
 
 function convertStorageResponseToDto(storage){
@@ -57,8 +89,19 @@ function convertStorageResponseToDto(storage){
     const parentName = storage.parentName;
     const storageItems = storage.storageItems;
     const subStoragesIdNameDictionary = storage.subStoragesIdNameDictionary;
-    const storageDto = new Storage(storageName, userId, id, parentId, parentName, storageItems, subStoragesIdNameDictionary);
-    return storageDto;
+    return new Storage(storageName, userId, id, parentId, parentName, storageItems, subStoragesIdNameDictionary);;
 }
 
-export {getAllSubStorages, getStorage, addNewSubStorage};
+function convertItemResponseToDto(item){
+    const itemId = item.id;
+    const storageId = item.storageId;
+    const title = item.title;
+    const serialNumber = item.serialNumber;
+    const image = item.image;
+    const category = item.category;
+    const weightInGrams = item.weightInGrams;
+    const amount = item.amount;
+    return new Item(storageId, title, itemId, serialNumber, image, category, weightInGrams , amount);
+
+}
+export {getAllSubStorages, getStorage, addNewSubStorage, addNewItem, getItem};

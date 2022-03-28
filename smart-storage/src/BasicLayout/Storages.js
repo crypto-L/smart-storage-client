@@ -13,6 +13,7 @@ class Storages extends React.Component{
         this.state = {
             currentStorageId: this.props.storageId ?? null,
             currentStorageName: null,
+            storageItems: [],
             parentStorageId: null,
             parentStorageName: null,
             subStorages: [],
@@ -50,13 +51,17 @@ class Storages extends React.Component{
             {
                 currentStorageId: storageId,
                 currentStorageName: currentStorage.storageName,
+                storageItems: currentStorage.storageItems,
                 parentStorageId: currentStorage.parentId,
                 parentStorageName: currentStorage.parentName,
                 subStorages: storages,
             });
         }
-        
     };
+
+    handleItemClick = async () => {
+
+    }
 
     async componentDidMount(){
 
@@ -75,11 +80,16 @@ class Storages extends React.Component{
 
     render(){
         const subStorages = this.state.subStorages;
+        const items = this.state.storageItems;
         const storageList = subStorages.map((stor) => 
             <li key={stor.id}>
                 <Button  type="link" onClick={() => this.handleStorageClick(stor.id)}>{stor.storageName}</Button>
             </li>);
-
+        const itemsList = items.map((item) =>
+            <li key={item.id}>
+                <Link to={'/addNewItem'} state={{storageId: this.state.currentStorageId, itemId: item.id}}>{item.title}</Link>
+            </li>
+        );
         //initial view with root storages
         if(this.state.currentStorageId === null){
             return(
@@ -106,7 +116,9 @@ class Storages extends React.Component{
             <Row>
             
             <Col span={12}>
-            <p>Storage {this.state.currentStorageName}:</p>
+            <p>Storage "{this.state.currentStorageName}".</p>
+            <p>Items:</p>
+            {itemsList}
             <AddNewStorage currentStorageId={this.state.currentStorageId} onNewStorageAdd={() => this.handleNewStorageAdd()}/>
             <Link to={'/addNewItem'} state={{storageId: this.state.currentStorageId}}>Add new item</Link>
             <Button type="link" onClick={() => this.handleStorageClick(parentId)}>
@@ -116,6 +128,7 @@ class Storages extends React.Component{
             </Col>
 
             <Col span={12}>
+            Sub Storages:
             {storageList}
             </Col>
             </Row>
