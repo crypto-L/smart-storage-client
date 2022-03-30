@@ -10,6 +10,7 @@ class EditItem extends React.Component {
 
         this.state = {
             success: null,
+            fromItems: this.props.fromItems,
             storageId: this.props.storageId,
             itemId: this.props.itemId,
             itemTitle: "",
@@ -29,8 +30,10 @@ class EditItem extends React.Component {
     async componentDidMount() {
         const itemId = this.state.itemId;
         const item = await getItem(localStorage.getItem('userId'), localStorage.getItem('token'), itemId);
+        console.log(this.state.fromItems);
         if (item !== null) {
             this.setState({
+                storageId: item.storageId,
                 itemTitle: item.title ?? "",
                 itemSerialNumber: item.serialNumber ?? "",
                 itemImage: item.image,
@@ -85,12 +88,17 @@ class EditItem extends React.Component {
     }
 
     render() {
+        let backLink = (<Link to={'/storages'} state={{ storageId: this.state.storageId }}>To storages</Link>);
+        if(this.state.fromItems){
+            backLink = (<Link to={'/items'} >To items</Link>)
+        }
         if (this.state.success !== true) {
+
             return (
                 <div className="EditItem">
                     <form onSubmit={this.handleFormSubmit}>
                         <label>Title:
-                            <input name="itemTitle" pattern=".{3,}" required title="1 character minimum" onChange={this.handleInputChange} value={this.state.itemTitle} type="text" />
+                            <input name="itemTitle" pattern=".{1,}" required title="1 character minimum" onChange={this.handleInputChange} value={this.state.itemTitle} type="text" />
                         </label>
 
                         <br />
@@ -118,7 +126,8 @@ class EditItem extends React.Component {
                     </form>
                     <button onClick={this.handleDeleteSubmit}>Delete item</button>
                     <br/>
-                    <Link to={'/storages'} state={{ storageId: this.state.storageId }}>To storages</Link>
+                    {backLink}
+                    
                 </div>
             );
         }
@@ -131,7 +140,7 @@ class EditItem extends React.Component {
                         type="success"
                         showIcon
                     />
-                    <Link to={'/storages'} state={{ storageId: this.state.storageId }}>To storages</Link>
+                    {backLink}
                 </div>
             );
         }

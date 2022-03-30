@@ -55,6 +55,25 @@ function addNewSubStorage(usrId, tokenString, storageName, currentStorageId){
         });
 }
 
+function getAllItems(usrId, tokenString){
+    const header = {userId: usrId, token: tokenString};
+    return axios.get(createUrl('/items/GetAll'), {headers: header})
+        .then(res => {
+            const itemDtos = res.data.map( (item) => convertItemResponseToDto(item));
+            return itemDtos;
+        }, error => {
+            return null;
+        })
+}
+
+function getTest(usrId, tokenString){
+    const header = {userId: usrId, token: tokenString}
+    return axios.get('https://localhost:7138/api/Items/GetAll?SerialNumber=num', {headers:header})
+        .then(res => {
+            console.log(res.data)
+        })
+}
+
 function addNewItem(usrId, tokenString, itemDto){
     const header = {userId: usrId, token: tokenString};
     return axios.post(createUrl('/items'), itemDto, {headers: header})
@@ -122,4 +141,4 @@ function convertItemResponseToDto(item){
     return new Item(storageId, title, itemId, serialNumber, image, category, weightInGrams , amount);
 
 }
-export {getAllSubStorages, getStorage, addNewSubStorage, addNewItem, getItem, editItem, deleteItem};
+export {getAllSubStorages, getStorage, addNewSubStorage, addNewItem, getItem, editItem, deleteItem, getAllItems, getTest};

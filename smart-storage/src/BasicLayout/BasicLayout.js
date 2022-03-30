@@ -7,7 +7,7 @@ import { Items } from "./Items";
 import './index.css';
 import { useLocation } from "react-router-dom";
 import AddNewItem from "./AddNewItem";
-import EditItem from "./EditFile";
+import EditItem from "./EditItem";
 
 const { Header, Content, Footer } = Layout;
 
@@ -23,8 +23,9 @@ const BasicLayout = () => {
     else {
         const storageId = state.storageId;
         const itemId = state.itemId;
+        const fromItems = state.fromItems;
         addNewItemRoute = <Route path="/addNewItem" element={<AddNewItem storageId={storageId}/>}/>
-        editItemRoute = <Route path="/editItem" element={<EditItem storageId={storageId} itemId={itemId}/>}/>
+        editItemRoute = <Route path="/editItem" element={<EditItem storageId={storageId} itemId={itemId} fromItems={fromItems}/>}/>
         storageRoute = <Route path="/storages" element={<Storages storageId={storageId}/>}/>
     }
 
