@@ -6,7 +6,6 @@ import { createUrlWithParameters , createUrl} from "../../pathHelpers";
 
 function getAllSubStorages(usrId, tokenString, parentStorageId){
     const header = { userId: usrId, token: tokenString };
-
     if (parentStorageId === null){
         return axios.get(createUrl('/Storages/GetAllStorages/0'), {headers : header})
             .then(res => { 
@@ -30,7 +29,6 @@ function getAllSubStorages(usrId, tokenString, parentStorageId){
 
 function getStorage(usrId, tokenString, storageId){
     const header = { userId: usrId, token: tokenString };
-
     return axios.get(createUrlWithParameters('/storages', storageId), {headers: header})
         .then(res => {
             const responseData = res.data;
@@ -59,12 +57,32 @@ function addNewSubStorage(usrId, tokenString, storageName, currentStorageId){
 
 function addNewItem(usrId, tokenString, itemDto){
     const header = {userId: usrId, token: tokenString};
-
     return axios.post(createUrl('/items'), itemDto, {headers: header})
         .then(res => {
             const responseData = res.data;
             return convertItemResponseToDto(responseData);
         }, error => {
+            return null;
+        })
+}
+
+function deleteItem(usrId, tokenString, itemDto){
+    const header = {userId: usrId, token: tokenString};
+    return axios.post(createUrl('/items/delete'), itemDto, {headers: header})
+        .then(res => {
+            return res.data;
+        }, error => {
+            return null;
+        })
+}
+
+function editItem(usrId, tokenString, itemDto){
+    const header = {userId: usrId, token: tokenString};
+    return axios.put(createUrl('/items'), itemDto, {headers: header})
+        .then(res => {
+            const responseData = res.data;
+            return convertItemResponseToDto(responseData);
+        }, error =>{
             return null;
         })
 }
@@ -104,4 +122,4 @@ function convertItemResponseToDto(item){
     return new Item(storageId, title, itemId, serialNumber, image, category, weightInGrams , amount);
 
 }
-export {getAllSubStorages, getStorage, addNewSubStorage, addNewItem, getItem};
+export {getAllSubStorages, getStorage, addNewSubStorage, addNewItem, getItem, editItem, deleteItem};

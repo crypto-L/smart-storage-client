@@ -87,7 +87,7 @@ class Storages extends React.Component{
             </li>);
         const itemsList = items.map((item) =>
             <li key={item.id}>
-                <Link to={'/addNewItem'} state={{storageId: this.state.currentStorageId, itemId: item.id}}>{item.title}</Link>
+                <Link to={'/editItem'} state={{storageId: this.state.currentStorageId, itemId: item.id}}>{item.title}</Link>
             </li>
         );
         //initial view with root storages

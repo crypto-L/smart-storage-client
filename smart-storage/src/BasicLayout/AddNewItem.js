@@ -2,7 +2,7 @@ import { Form, Input, Button, InputNumber, Alert } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import Item from "../DTO/Item";
-import { addNewItem , getItem} from "./api/basic-layout-api";
+import { addNewItem } from "./api/basic-layout-api";
 
 class AddNewItem extends React.Component {
     constructor(props) {
@@ -10,8 +10,6 @@ class AddNewItem extends React.Component {
 
         this.state = {
             success: null,
-            itemId: this.props.itemId ?? null,
-            itemTitle: null,
         }
 
     }
@@ -28,15 +26,6 @@ class AddNewItem extends React.Component {
         const response = await addNewItem(localStorage.getItem('userId'), localStorage.getItem('token'), item);
         if (response !== null) {
             this.setState({ success: true });
-        }
-    }
-
-    async componentDidMount(){
-        if(this.state.itemId !== null){
-            const itemId = this.state.itemId;
-            const item = await getItem(localStorage.getItem('userId'), localStorage.getItem('token'), itemId);
-            this.setState({itemTitle: item.title});
-            
         }
     }
 
@@ -57,23 +46,22 @@ class AddNewItem extends React.Component {
             );
         } else {
             
-            console.log(this.state.itemTitle)
             return (
                 <div>
                     <Form name="itemForm" onFinish={(values) => this.handleOnClick(values)}>
-                        <Form.Item initialValue={this.state.itemTitle} name="title" label="Title" rules={[{ required: true }]}>
+                        <Form.Item name="title" label="Title" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
-                        <Form.Item initialValue={''} name="serialNumber" label="Serial number">
+                        <Form.Item name="serialNumber" label="Serial number">
                             <Input />
                         </Form.Item>
-                        <Form.Item initialValue={''} name='category' label="Category" >
+                        <Form.Item name='category' label="Category" >
                             <Input />
                         </Form.Item>
-                        <Form.Item initialValue={''} name='weight' label="Weight in grams">
+                        <Form.Item name='weight' label="Weight in grams">
                             <InputNumber min={0} />
                         </Form.Item>
-                        <Form.Item initialValue={''} name='amount' label="Amount">
+                        <Form.Item name='amount' label="Amount">
                             <InputNumber min={0} />
                         </Form.Item>
                         <Form.Item>
