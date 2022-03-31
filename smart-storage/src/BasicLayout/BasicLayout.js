@@ -29,6 +29,13 @@ const BasicLayout = () => {
         storageRoute = <Route path="/storages" element={<Storages storageId={storageId}/>}/>
     }
 
+    function logOut(){
+        localStorage.removeItem('userId');
+        localStorage.removeItem('token');
+        window.location = '/'
+        window.location.reload(false);
+    }
+
     return (
         <Layout className="layout">
             <Header>
@@ -36,6 +43,7 @@ const BasicLayout = () => {
                  <Menu theme="dark" mode="horizontal" defaultSelectedKeys={'0'}>
                     <Menu.Item key={1}>Storages<Link to="/storages" /></Menu.Item>
                     <Menu.Item key={2}>Items<Link to="/items" /></Menu.Item>
+                    <Menu.Item key={3} style={{marginLeft: 'auto'}} onClick={logOut}><Link to="/">Log out</Link></Menu.Item>
                 </Menu>
             </Header>
             <Content style={{ padding: '0 50px' }}>
