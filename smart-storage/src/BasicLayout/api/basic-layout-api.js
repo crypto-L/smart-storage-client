@@ -66,11 +66,17 @@ function getAllItems(usrId, tokenString){
         })
 }
 
-function getTest(usrId, tokenString){
+function getAllItemsWithFilter(usrId, tokenString, queryParameters){
     const header = {userId: usrId, token: tokenString}
-    return axios.get('https://localhost:7138/api/Items/GetAll?SerialNumber=num', {headers:header})
+    queryParameters = queryParameters !== null ? queryParameters : '';
+    console.log(createUrlWithParameters('/items/GetAll', queryParameters, true))
+
+    return axios.get(createUrlWithParameters('/items/GetAll', queryParameters, true), {headers:header})
         .then(res => {
-            console.log(res.data)
+            const itemDtos = res.data.map( (item) => convertItemResponseToDto(item));
+            return itemDtos; 
+        }, error => {
+            return null;
         })
 }
 
@@ -141,4 +147,4 @@ function convertItemResponseToDto(item){
     return new Item(storageId, title, itemId, serialNumber, image, category, weightInGrams , amount);
 
 }
-export {getAllSubStorages, getStorage, addNewSubStorage, addNewItem, getItem, editItem, deleteItem, getAllItems, getTest};
+export {getAllSubStorages, getStorage, addNewSubStorage, addNewItem, getItem, editItem, deleteItem, getAllItems, getAllItemsWithFilter};

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import {getAllItems, getTest} from "./api/basic-layout-api";
+import {getAllItems, getAllItemsWithFilter} from "./api/basic-layout-api";
 import { Row, Table, Col } from 'antd';
 import Column from "antd/lib/table/Column";
 import ItemQueryParameters from "../DTO/ItemFilterOptions";
@@ -21,6 +21,7 @@ class Items extends React.Component {
 
         }
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSearchButton = this.handleSearchButton.bind(this);
     }
 
     handleInputChange(event) {
@@ -31,25 +32,36 @@ class Items extends React.Component {
         this.setState({
             [name]: value
         })
-        console.log(this.state[name])
     }
 
-    handleSearchButton(){
+    async handleSearchButton(){
         //TODO: implement
         // take filter parameters from inputs, create queryString, create request
+        const titleParameter = this.state.titleFilter === "" ? null : this.state.titleFilter;
+        const serialNumberParameter = this.state.serialNumberFilter === "" ? null : this.state.serialNumberFilter;
+        const categoryParameter = this.state.categoryFilter === "" ? null : this.state.categoryFilter;
+        const minWeightParameter = this.state.minWeightFilter === "" ? null : this.state.minWeightFilter;
+        const maxWeightParmeter = this.state.maxWeightFilter === "" ? null : this.state.maxWeightFilter;
+        const minAmountParameter = this.state.minAmountFilter === "" ? null : this.state.minAmountFilter;
+        const maxAmountParameter = this.state.maxAmountFilter === "" ? null : this.state.maxAmountFilter;
+
+        let queryParameters = new ItemQueryParameters(titleParameter, serialNumberParameter,  categoryParameter, minWeightParameter, 
+            maxWeightParmeter, minAmountParameter, maxAmountParameter);
+        let queryString = queryParameters.makeQueryString();
+        
+        const items = await getAllItemsWithFilter(localStorage.getItem('userId'), localStorage.getItem('token'),queryString) ?? [];
+        this.setState({
+            items: items,
+        })
+
+
     }
 
     async componentDidMount(){
         const items = await getAllItems(localStorage.getItem('userId'), localStorage.getItem('token')) ?? [];
         this.setState({
             items: items,
-        });
-
-        let queryParameters = new ItemQueryParameters();
-        let query = queryParameters.makeQueryString();
-        console.log(query);
-        var testItems = getTest(localStorage.getItem('userId'), localStorage.getItem('token'));
-        
+        }); 
     }
 
     render(){
@@ -61,6 +73,7 @@ class Items extends React.Component {
                     <input name="titleFilter" placeholder="Title" onChange={this.handleInputChange} value={this.state.titleFilter} />
                     <input name="serialNumberFilter" placeholder="Serial number" onChange={this.handleInputChange} value={this.state.serialNumberFilter}/>
                     <input name="categoryFilter" placeholder="Category" onChange={this.handleInputChange} value={this.state.categoryFilter} />
+                    <button onClick={this.handleSearchButton}>Search</button>
                     <Col span={12}>
                     <input name="minWeightFilter" min='0' type="number" placeholder="Minimal weight" onChange={this.handleInputChange} value={this.state.minWeightFilter}/>
                     <input name="maxWeightFilter" min='0' type="number" placeholder="Maximal weight" onChange={this.handleInputChange} value={this.state.maxWeightFilter}/>
