@@ -69,7 +69,6 @@ function getAllItems(usrId, tokenString){
 function getAllItemsWithFilter(usrId, tokenString, queryParameters){
     const header = {userId: usrId, token: tokenString}
     queryParameters = queryParameters !== null ? queryParameters : '';
-    console.log(createUrlWithParameters('/items/GetAll', queryParameters, true))
 
     return axios.get(createUrlWithParameters('/items/GetAll', queryParameters, true), {headers:header})
         .then(res => {

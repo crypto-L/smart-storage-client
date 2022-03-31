@@ -19,6 +19,7 @@ class EditItem extends React.Component {
             itemCategory: "",
             itemWeight: 0,
             itemAmount: 0,
+            filterObject: this.props.filterObject,
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -30,7 +31,7 @@ class EditItem extends React.Component {
     async componentDidMount() {
         const itemId = this.state.itemId;
         const item = await getItem(localStorage.getItem('userId'), localStorage.getItem('token'), itemId);
-        console.log(this.state.fromItems);
+
         if (item !== null) {
             this.setState({
                 storageId: item.storageId,
@@ -78,7 +79,6 @@ class EditItem extends React.Component {
         const weight = this.state.itemWeight === "" ? null : this.state.itemWeight;
         const amount = this.state.itemAmount === "" ? null : this.state.itemAmount;
         const itemDto = new Item(storageId, title, itemId, serialNumber, image, category, weight, amount);
-        console.log(itemDto);
 
         const editedItem = await editItem(localStorage.getItem('userId'), localStorage.getItem('token'), itemDto);
         if(editedItem !== null){
@@ -90,7 +90,8 @@ class EditItem extends React.Component {
     render() {
         let backLink = (<Link to={'/storages'} state={{ storageId: this.state.storageId }}>To storages</Link>);
         if(this.state.fromItems){
-            backLink = (<Link to={'/items'} >To items</Link>)
+
+            backLink = (<Link to={'/items'} state={{filterObject:this.state.filterObject}}>To items</Link>)
         }
         if (this.state.success !== true) {
 

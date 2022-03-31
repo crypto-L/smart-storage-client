@@ -18,6 +18,7 @@ class Items extends React.Component {
             maxWeightFilter: "",
             minAmountFilter: "",
             maxAmountFilter: "",
+            filterObject: this.props.filterObject,
 
         }
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -48,17 +49,46 @@ class Items extends React.Component {
         let queryParameters = new ItemQueryParameters(titleParameter, serialNumberParameter,  categoryParameter, minWeightParameter, 
             maxWeightParmeter, minAmountParameter, maxAmountParameter);
         let queryString = queryParameters.makeQueryString();
-        
+
         const items = await getAllItemsWithFilter(localStorage.getItem('userId'), localStorage.getItem('token'),queryString) ?? [];
         this.setState({
             items: items,
+            filterObject: queryParameters,
         })
-
 
     }
 
     async componentDidMount(){
-        const items = await getAllItems(localStorage.getItem('userId'), localStorage.getItem('token')) ?? [];
+        let items = []
+
+        //if returned from 'EditItem' page after filter applyed
+        if(this.state.filterObject){
+            const filterObject = this.state.filterObject;
+            const titleFilter = filterObject.title;
+            const serialNumberFilter = filterObject.serialNumber;
+            const categoryFilter = filterObject.category;
+            const minWeightFilter = filterObject.minWeight;
+            const maxWeightFilter = filterObject.maxWeight;
+            const minAmountFilter = filterObject.minAmount;
+            const maxAmountFilter = filterObject.maxAmount;
+            const queryParameters = new ItemQueryParameters(titleFilter, serialNumberFilter, categoryFilter, minWeightFilter, maxWeightFilter,
+                minAmountFilter, maxAmountFilter);
+            
+            const queryString = queryParameters.makeQueryString();
+            this.setState({
+                titleFilter: titleFilter ?? "",
+                serialNumberFilter: serialNumberFilter ?? "",
+                categoryFilter: categoryFilter ?? "",
+                minWeightFilter: minWeightFilter ?? "",
+                maxWeightFilter: maxWeightFilter ?? "",
+                minAmountFilter: minAmountFilter ?? "",
+                maxAmountFilter: maxAmountFilter ?? "",
+            })
+            items = await getAllItemsWithFilter(localStorage.getItem('userId'), localStorage.getItem('token'),queryString) ?? []; 
+        } else {
+            items = await getAllItems(localStorage.getItem('userId'), localStorage.getItem('token')) ?? [];
+        }
+        
         this.setState({
             items: items,
         }); 
@@ -91,7 +121,7 @@ class Items extends React.Component {
                 <Column title="Weight" dataIndex="weightInGrams"/>
                 <Column title="Amount" dataIndex="amount"/>
                 <Column title="Edit" key="edit" render={(item) =>(
-                    <Link to={'/editItem'} state={{itemId: item.id, fromItems: true}}>Edit</Link>
+                    <Link to={'/editItem'} state={{itemId: item.id, fromItems: true, filterObject: this.state.filterObject}}>Edit</Link>
                 )}/>
                 </Table>
                 <Link to={'/storages'}>To storages</Link>

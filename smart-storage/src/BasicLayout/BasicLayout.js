@@ -16,17 +16,25 @@ const BasicLayout = () => {
     let storageRoute = null;
     let addNewItemRoute = null;
     let editItemRoute = null;
+    let itemsRoute = null;
     
     if(state === null){
         storageRoute = (<Route path="/storages" element={<Storages/>}/>);
+        itemsRoute = <Route path="/items" element={<Items />}/>
     }
     else {
+        
         const storageId = state.storageId;
+        addNewItemRoute = <Route path="/addNewItem" element={<AddNewItem storageId={storageId}/>}/>
+
         const itemId = state.itemId;
         const fromItems = state.fromItems;
-        addNewItemRoute = <Route path="/addNewItem" element={<AddNewItem storageId={storageId}/>}/>
-        editItemRoute = <Route path="/editItem" element={<EditItem storageId={storageId} itemId={itemId} fromItems={fromItems}/>}/>
+        const filterObject = state.filterObject;
+        editItemRoute = <Route path="/editItem" element={<EditItem storageId={storageId} itemId={itemId} fromItems={fromItems} filterObject={filterObject}/>}/>
+
         storageRoute = <Route path="/storages" element={<Storages storageId={storageId}/>}/>
+
+        itemsRoute = <Route path="/items" element={<Items filterObject={filterObject}/>}/>
     }
 
     function logOut(){
@@ -50,7 +58,7 @@ const BasicLayout = () => {
                 <div className="site-layout-content">
                 <Routes>
                     {storageRoute}
-                    <Route path="/items" element={<Items />}/>
+                    {itemsRoute}
                     {addNewItemRoute}
                     {editItemRoute}
                 </Routes>
