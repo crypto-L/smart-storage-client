@@ -1,5 +1,4 @@
 import axios from "axios";
-import Token from "../../DTO/Token";
 import Item from "../../DTO/Item";
 import Storage from "../../DTO/Storage";
 import { createUrlWithParameters , createUrl} from "../../pathHelpers";

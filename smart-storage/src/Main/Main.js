@@ -1,4 +1,5 @@
 import React from 'react';
+import AdminLayout from '../AdminLayout/AdminLayout';
 import BasicLayout from '../BasicLayout/BasicLayout';
 import {isAdminCheckRequest} from './api/user-role-api';
 
@@ -18,6 +19,7 @@ class Main extends React.Component {
     async checkForRole(){
         var response = await isAdminCheckRequest(localStorage.getItem('userId'), localStorage.getItem('token'));
         this.setState({isAdmin: response});
+        console.log(this.state.isAdmin)
     }
 
     render() {
@@ -25,7 +27,7 @@ class Main extends React.Component {
             return (<BasicLayout />);
         }
         else if(this.state.isAdmin === true){
-            return "Admin layout. Not implemented yet.";
+            return (<AdminLayout />);
         } else {
             return null;
         }

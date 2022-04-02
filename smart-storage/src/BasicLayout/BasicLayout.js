@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import 'antd/dist/antd.css';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu} from 'antd';
 import { Link, Route, Routes } from "react-router-dom";
 import Storages from "./Storages";
 import { Items } from "./Items";
@@ -45,7 +45,7 @@ const BasicLayout = () => {
     }
 
     return (
-        <Layout className="layout">
+        <Layout className="Layout">
             <Header>
                 <div className="logo" />
                  <Menu theme="dark" mode="horizontal" defaultSelectedKeys={'0'}>
