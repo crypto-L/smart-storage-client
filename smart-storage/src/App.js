@@ -26,12 +26,10 @@ class App extends React.Component {
     };
 
     render() {
-        //или тут проверять локал сторадж на наличие токена, если нету - рендерить логин 
-        //https://ru.reactjs.org/docs/conditional-rendering.html как раз тут примерр
+        
         if(!this.state.isLogged){
             return(
                 <div className="App">
-                    {this.state.isLogged.toString()}
                 <Login onLogin={this.handleLogin}/>
                 </div>
             );

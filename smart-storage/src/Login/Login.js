@@ -42,7 +42,7 @@ class Login extends React.Component {
   };
 
   render() {
-    // TODO: проверять тут токен в локал-сторадже, если есть, редирект на хоум
+    
     const renderErrorBlock = () => {
       if(this.state.errorOccured){
         return (<Alert
