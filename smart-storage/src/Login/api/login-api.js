@@ -14,7 +14,6 @@ function loginRequest(nickname, password) {
             return new Token(userId, token);
         }
     }, error => {
-        console.dir(error.response.status);
         return null;
     });
 };

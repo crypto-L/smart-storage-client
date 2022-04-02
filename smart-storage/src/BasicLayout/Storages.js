@@ -1,5 +1,4 @@
 import React from "react";
-import Storage from "../DTO/Storage";
 import {getAllSubStorages, getStorage} from './api/basic-layout-api';
 import {Row, Col, Button} from 'antd';
 import { Link } from "react-router-dom";

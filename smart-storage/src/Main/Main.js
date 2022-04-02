@@ -19,7 +19,6 @@ class Main extends React.Component {
     async checkForRole(){
         var response = await isAdminCheckRequest(localStorage.getItem('userId'), localStorage.getItem('token'));
         this.setState({isAdmin: response});
-        console.log(this.state.isAdmin)
     }
 
     render() {

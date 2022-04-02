@@ -36,7 +36,7 @@ class Items extends React.Component {
     }
 
     async handleSearchButton(){
-        //TODO: implement
+    
         // take filter parameters from inputs, create queryString, create request
         const titleParameter = this.state.titleFilter === "" ? null : this.state.titleFilter;
         const serialNumberParameter = this.state.serialNumberFilter === "" ? null : this.state.serialNumberFilter;

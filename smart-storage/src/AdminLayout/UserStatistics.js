@@ -42,6 +42,7 @@ class UserStatistics extends React.Component {
         const rootStoragesCount = this.state.rootStoragesCount;
         const totalStoragesCount = this.state.storagesCount;
         const maxItemsStorage = this.state.maxItemsStorage;
+        
         let maxItemStatistics = (<Statistic title="Storage with the maximum number of items" value="-"/>);
         if(maxItemsStorage !== null 
             && maxItemsStorage.storageItems != null
