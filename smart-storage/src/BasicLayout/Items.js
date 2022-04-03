@@ -100,18 +100,21 @@ class Items extends React.Component {
             <div className="Items">
                 
                 <Row>
+                    <Col span={6}>
                     <input name="titleFilter" placeholder="Title" onChange={this.handleInputChange} value={this.state.titleFilter} />
                     <input name="serialNumberFilter" placeholder="Serial number" onChange={this.handleInputChange} value={this.state.serialNumberFilter}/>
                     <input name="categoryFilter" placeholder="Category" onChange={this.handleInputChange} value={this.state.categoryFilter} />
-                    <button onClick={this.handleSearchButton}>Search</button>
-                    <Col span={12}>
+                    </Col>
+                    
+                    <Col span={6}>
                     <input name="minWeightFilter" min='0' type="number" placeholder="Minimal weight" onChange={this.handleInputChange} value={this.state.minWeightFilter}/>
                     <input name="maxWeightFilter" min='0' type="number" placeholder="Maximal weight" onChange={this.handleInputChange} value={this.state.maxWeightFilter}/>
                     </Col>
-                    <Col span={12}>
+                    <Col span={6}>
                     <input name="minAmountFilter" min='0' type="number" placeholder="Minimal amount" onChange={this.handleInputChange} value={this.state.minAmountFilter}/>
                     <input name="maxAmountFilter" min='0' type="number" placeholder="Maximal amount" onChange={this.handleInputChange} value={this.state.maxAmountFilter}/>
                     </Col>
+                    <button onClick={this.handleSearchButton}>Search</button>
                 </Row>
 
                 <Table dataSource={data} rowKey='id'>
