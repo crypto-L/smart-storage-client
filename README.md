@@ -15,6 +15,7 @@ cd .\smart-storage\
 ~~~
 npm install react-scripts –save
 ~~~
+If error occures, try "npm install react-scripts" command instead
 - Run the client application
 ~~~
 npm start 

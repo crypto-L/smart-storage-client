@@ -138,9 +138,9 @@ class EditItem extends React.Component {
                         </label>
 
                         <br />
-                        <label>
+                        <label>Amount:
                             <input name="itemAmount" min='0' onChange={this.handleInputChange} value={this.state.itemAmount} type="number" />
-                        </label>Amount:
+                        </label>
 
                         <br />
                         <input value="Save changes" type='submit' />
