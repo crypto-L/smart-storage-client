@@ -10,8 +10,25 @@ class AddNewItem extends React.Component {
 
         this.state = {
             success: null,
+            itemImage: null
         }
 
+    }
+
+    onImageFormChange = (e) => {
+        let file = e.target.files[0];
+        if(file){
+            const reader = new FileReader();
+            reader.onload =  this.handleReaderLoaded.bind(this);
+            reader.readAsBinaryString(file);
+        }
+    }
+
+    handleReaderLoaded = (readerEvt) => {
+        let binaryString = readerEvt.target.result;
+        this.setState({
+            itemImage: btoa(binaryString),
+        })
     }
 
     handleOnClick = async (values) => {
@@ -21,7 +38,8 @@ class AddNewItem extends React.Component {
         const category = values.category ? values.category : null;
         const weight = values.weight ? values.weight : null;
         const amount = values.amount ? values.amount : null;
-        const item = new Item(storageId, title, null, serialNumber, null, category, weight, amount);
+        const image = this.state.itemImage;
+        const item = new Item(storageId, title, null, serialNumber, image, category, weight, amount);
 
         const response = await addNewItem(localStorage.getItem('userId'), localStorage.getItem('token'), item);
         if (response !== null) {
@@ -70,6 +88,15 @@ class AddNewItem extends React.Component {
                             </Button>
                         </Form.Item>
                     </Form>
+                    <form onChange={(e) => this.onImageFormChange(e)}>
+                        <input 
+                            type="file"
+                            name="image"
+                            id="file"
+                            accept=".jpeg, .png, .jpg"
+                        />
+                    </form>
+                    <img src={`data:image/jpeg;base64,${this.state.itemImage}`}/>
                     <Link to={'/storages'} state={{ storageId: this.props.storageId }}>To storages</Link>
                     <br />
                 </div>

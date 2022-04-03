@@ -121,44 +121,6 @@ function getItem(usrId, tokenString, itemId){
         });
 }
 
-function getImage(){
-    return axios.get("url", 
-        {
-            responseType: 'arraybuffer'
-        }).then(res => {
-        return btoa(String.fromCharCode.apply(null, new Uint8Array(res.data)));
-    }, error => {
-        return null;
-    })
-}
-
-function b64ImageToBufferArray(base64Image){
-    let binaryString = window.atob(base64Image);
-    let len = binaryString.length;
-    let bytes = new Uint8Array(len);
-    for(let i = 0; i < len; i++){
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
-}
-
-function sendImage(byteArray){
-    let xhr = new XMLHttpRequest;
-    xhr.open("POST", createUrl('/Items/PostImage'), true);
-    xhr.setRequestHeader("Accept", "application/json");
-    xhr.setRequestHeader("Content-type", "application/json");
-    
-    xhr.send(byteArray);
-}
-
-function sendImageAxios(b64ImageString){
-    let image = {imageData: b64ImageString}
-    
-    return axios.post(createUrl('/Items/PostImage'), image)
-        .then(res => console.log(res.data))
-
-}
-
 function convertStorageResponseToDto(storage){
     const storageName = storage.storageName;
     const userId = storage.userId;
@@ -182,4 +144,4 @@ function convertItemResponseToDto(item){
     return new Item(storageId, title, itemId, serialNumber, image, category, weightInGrams , amount);
 
 }
-export {getAllSubStorages, getStorage, addNewSubStorage, addNewItem, getItem, editItem, deleteItem, getAllItems, getAllItemsWithFilter, getImage, b64ImageToBufferArray, sendImage, sendImageAxios};
+export {getAllSubStorages, getStorage, addNewSubStorage, addNewItem, getItem, editItem, deleteItem, getAllItems, getAllItemsWithFilter};

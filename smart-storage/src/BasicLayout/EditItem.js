@@ -2,7 +2,7 @@ import React from "react";
 import { Alert } from "antd";
 import { Link } from "react-router-dom";
 import Item from "../DTO/Item";
-import { getItem, editItem, deleteItem, getImage, b64ImageToBufferArray, sendImage, sendImageAxios } from "./api/basic-layout-api";
+import { getItem, editItem, deleteItem } from "./api/basic-layout-api";
 
 class EditItem extends React.Component {
     constructor(props) {
