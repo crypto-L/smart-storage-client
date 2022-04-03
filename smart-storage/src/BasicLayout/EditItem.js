@@ -2,7 +2,7 @@ import React from "react";
 import { Alert } from "antd";
 import { Link } from "react-router-dom";
 import Item from "../DTO/Item";
-import { getItem, editItem, deleteItem } from "./api/basic-layout-api";
+import { getItem, editItem, deleteItem, getImage, b64ImageToBufferArray, sendImage, sendImageAxios } from "./api/basic-layout-api";
 
 class EditItem extends React.Component {
     constructor(props) {
@@ -25,13 +25,14 @@ class EditItem extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
+        
 
     }
 
     async componentDidMount() {
         const itemId = this.state.itemId;
         const item = await getItem(localStorage.getItem('userId'), localStorage.getItem('token'), itemId);
-
+    
         if (item !== null) {
             this.setState({
                 storageId: item.storageId,
@@ -55,8 +56,23 @@ class EditItem extends React.Component {
         })
     }
 
+    onImageFormChange = (e) => {
+        let file = e.target.files[0];
+        if(file){
+            const reader = new FileReader();
+            reader.onload =  this.handleReaderLoaded.bind(this);
+            reader.readAsBinaryString(file);
+        }
+    }
+
+    handleReaderLoaded = (readerEvt) => {
+        let binaryString = readerEvt.target.result;
+        this.setState({
+            itemImage: btoa(binaryString),
+        })
+    }
+
     async handleDeleteSubmit() {
-        console.log(this.state.itemId);
         const itemId = this.state.itemId;
         const storageId = this.state.storageId;
         const title = this.state.itemTitle;
@@ -128,7 +144,15 @@ class EditItem extends React.Component {
                     <button onClick={this.handleDeleteSubmit}>Delete item</button>
                     <br/>
                     {backLink}
-                    
+                    <form onChange={(e) => this.onImageFormChange(e)}>
+                        <input 
+                            type="file"
+                            name="image"
+                            id="file"
+                            accept=".jpeg, .png, .jpg"
+                        />
+                    </form>
+                    <img src={`data:image/jpeg;base64,${this.state.itemImage}`}/>
                 </div>
             );
         }
